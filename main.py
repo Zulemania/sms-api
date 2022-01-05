@@ -11,9 +11,9 @@ client = Client(account_sid, auth_token)
 
 message = client.messages \
                 .create(
-                     body="Apparently, we are pencils. Like your *redacted.",
+                     body="Hell is real.",
                      from_='+14845099095',
                      to='+4915222072245'
                  )
 
-print(message.sid)
+print(message.to)
