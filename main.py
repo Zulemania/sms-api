@@ -7,8 +7,20 @@ from botocore.exceptions import ClientError
 from boto3 import Session
 from datetime import datetime
 from elasticsearch import Elasticsearch, helpers
-client = Elasticsearch("localhost:9200")
 
+
+es = Elasticsearch(
+    "localhost: 9200"
+)
+
+doc = { 
+    "job": "Engineer",
+    "age": 30,
+    "gender": 'M'
+}
+# Write a document
+resp = es.index(index="mofesola", id=1, document=doc)
+print(resp['result'])
 
 # Find your Account SID and Auth Token at twilio.com/console
 # and set the environment variables. See http://twil.io/secure
