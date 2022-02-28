@@ -18,6 +18,7 @@ doc = {
     "age": 30,
     "gender": 'M'
 }
+
 # Write a document
 resp = es.index(index="mofesola", id=1, document=doc)
 print(resp['result'])
