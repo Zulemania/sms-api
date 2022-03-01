@@ -1,4 +1,4 @@
 twilio==7.4.0
 boto3
-
+elasticsearch
 
