@@ -13,6 +13,10 @@ from elasticsearch import Elasticsearch, helpers
 # Find your Account SID and Auth Token at twilio.com/console
 # and set the environment variables. See http://twil.io/secure
 
+f = open('sms_queue.txt', 'r')
+with open('sms_queue.txt') as f:
+    contents = f.read()
+    print(contents)
 
 def get_secret(secret_name):
     region_name = "eu-west-1"
@@ -49,8 +53,7 @@ def get_secret(secret_name):
 
 def send_sms(message):
     es = Elasticsearch(
-    "localhost: 9200"
-    
+    "localhost: 9200"    
 )
 
     account_sid = get_secret('ACCOUNT_SID')
@@ -95,6 +98,7 @@ def send_sms(message):
 
     print(resp['result'])
     print(es_data)
+
 
 if __name__ == "__main__":
     send_sms("Hello there")
