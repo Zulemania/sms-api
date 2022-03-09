@@ -9,14 +9,14 @@ from datetime import datetime
 from elasticsearch import Elasticsearch, helpers
 
 
-
 # Find your Account SID and Auth Token at twilio.com/console
 # and set the environment variables. See http://twil.io/secure
 
-f = open('sms_queue.txt', 'r')
-with open('sms_queue.txt') as f:
-    contents = f.read()
-    print(contents)
+def read_file():
+    f = open('sms_queue.txt', 'r')
+    with open('sms_queue.txt') as f:
+        for line in f:
+            print(line)
 
 def get_secret(secret_name):
     region_name = "eu-west-1"
@@ -26,8 +26,6 @@ def get_secret(secret_name):
         service_name='secretsmanager',
         region_name=region_name,
     )
-    
-
     try:
         get_secret_value_response = client.get_secret_value(
             SecretId=secret_name
@@ -59,14 +57,11 @@ def send_sms(message):
     account_sid = get_secret('ACCOUNT_SID')
     auth_token = get_secret("ACCOUNT_AUTH")
     client = Client(account_sid, auth_token)
-
-    #doc = {'_version': <Twilio.Api.V2010>, '_properties': {'body': 'Hello there', 'num_segments': '1', 'direction': 'outbound-api', 'from_': '+14845099095', 'to': '+2348060073375', 'date_updated': datetime.datetime(2022, 2, 28, 18, 4, 4, tzinfo=<UTC>), 'price': None, 'error_message': None, 'uri': '/2010-04-01/Accounts/ACa0b11da3a6989c6b48dcc3acc2d2032c/Messages/SMdc3a132855634883ad1b5c93eb40ce2c.json', 'account_sid': 'ACa0b11da3a6989c6b48dcc3acc2d2032c', 'num_media': '0', 'status': 'queued', 'messaging_service_sid': None, 'sid': 'SMdc3a132855634883ad1b5c93eb40ce2c', 'date_sent': None, 'date_created': datetime.datetime(2022, 2, 28, 18, 4, 4, tzinfo=<UTC>), 'error_code': None, 'price_unit': 'USD', 'api_version': '2010-04-01', 'subresource_uris': {'media': '/2010-04-01/Accounts/ACa0b11da3a6989c6b48dcc3acc2d2032c/Messages/SMdc3a132855634883ad1b5c93eb40ce2c/Media.json'}}, '_context': None, '_solution': {'account_sid': 'ACa0b11da3a6989c6b48dcc3acc2d2032c', 'sid': 'SMdc3a132855634883ad1b5c93eb40ce2c'}}
-
     message = client.messages \
                     .create(
                      body=message,
                      from_='+14845099095',
-                     to='+4915222072245'
+                     to= 'number'
                  )
 
     es_data = {
@@ -85,7 +80,7 @@ def send_sms(message):
         "num_segments": "1",
         "price": "null",
         "price_unit": "null",
-        "sid": message.sid,
+       "sid": message.sid,
         "status": "sent",
         "subresource_uris": {
             "media": "/2010-04-01/Accounts/ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Messages/SMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Media.json"
@@ -100,5 +95,7 @@ def send_sms(message):
     print(es_data)
 
 
+
+
 if __name__ == "__main__":
-    send_sms("Hello there")
+    #send_sms("Hello there")
