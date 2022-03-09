@@ -61,7 +61,7 @@ def send_sms(message):
                     .create(
                      body=message,
                      from_='+14845099095',
-                     to= 'number'
+                     to= '+2348060073375'
                  )
 
     es_data = {
@@ -98,4 +98,4 @@ def send_sms(message):
 
 
 if __name__ == "__main__":
-    #send_sms("Hello there")
+    send_sms("Hello there")
